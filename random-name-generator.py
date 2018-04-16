@@ -53,7 +53,7 @@ def main(argv):
         for i in range(num_names):
             print(generate(length, model_base_name))
     except Exception:
-        print("Usage: random-name-generator.py <length> <model_base_name>")
+        print("Usage: random-name-generator.py [num_names=1] <length> <model_base_name>")
         exit(0)
     
 
