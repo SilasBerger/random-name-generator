@@ -29,6 +29,7 @@ def char_to_index(c):
 	return ord(c) - INDEX_OFFSET
 
 
+# convert counts to likelihoods
 def normalize(x):
 	# normalize initial state vector
 	if(len(x.shape) == 1):
@@ -47,19 +48,21 @@ def verify_args_or_die(argv):
 
 
 def main(argv):
+	# check and parse cmd args
 	verify_args_or_die(argv)
 	input_filename = argv[0]
 	output_filename = argv[1]
 	
+	# load training file
 	print("reading input file")
 	with open(input_filename, "r") as infile:
 		print("training Markov model")
 		initial_states, follow = train(infile)
 	
+	# export learned model parts
 	print("saving model")
-	# export np arrays
-	np.save(output_filename + "_initial", initial_states)
-	np.save(output_filename + "_follow", follow)
+	np.save(output_filename + "_initial", initial_states)  # initial char likelihoods
+	np.save(output_filename + "_follow", follow)  # follow likelihoods
 	
 	print("done")
 

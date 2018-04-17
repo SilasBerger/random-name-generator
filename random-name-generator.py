@@ -2,12 +2,14 @@ import numpy as np
 import sys
 
 
+# all lower-case chars as string
 chars = "abcdefghijklmnopqrstuvwxyz"
 
 # so we can use characters as array indices
 INDEX_OFFSET = ord('a')
         
 
+# generate random name with given length, for given model
 def generate(length, model_base_name):
     # convert chars string into list of separate chars
     choices = []
@@ -15,20 +17,20 @@ def generate(length, model_base_name):
         choices.append(c)
 
     # load numpy model parts
-    initial = np.load(model_base_name + "_initial.npy")
-    follow = np.load(model_base_name + "_follow.npy")
+    initial = np.load(model_base_name + "_initial.npy")  # initial char likelihoods
+    follow = np.load(model_base_name + "_follow.npy")  # follow likelihoods
 
     # find a random initial char
     current_char = initial_char(choices, initial)
 
-    # start random name with initial char
+    # start random name with initial char (as upper case)
     name = current_char.upper()
 
     # append length-1 follow-chars
     for i in range(length-1):
-        follow_c = next_char(current_char, choices, follow)
-        name += follow_c
-        current_char = follow_c
+        follow_c = next_char(current_char, choices, follow)  # choose random next char, weighted by model, depending on current char
+        name += follow_c  # append new char to name
+        current_char = follow_c  # new char is now current char
         
     return name
 
